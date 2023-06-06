@@ -15,4 +15,4 @@ __pycache__/
 .idea/
 
 # Sqlite
-*.sqlite3
+!/core/db.sqlite3
