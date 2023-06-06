@@ -1,0 +1,18 @@
+### _my_default template
+# MacOS
+.DS_Store
+
+# Byte-compiled / optimized / DLL files
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+
+# PyCharm
+.idea/
+
+# Sqlite
+*.sqlite3

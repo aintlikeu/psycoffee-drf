@@ -1,26 +1,14 @@
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from accounts.models import Customer, Patient
+from accounts.models import Customer
 
 
 class CustomerChangeForm(UserChangeForm):
     class Meta:
         model = Customer
-        fields = ('email',)
+        fields = ('phone',)
 
 
 class CustomerCreationForm(UserCreationForm):
     class Meta:
         model = Customer
-        fields = ('email',)
-
-
-class PatientChangeForm(UserChangeForm):
-    class Meta:
-        model = Patient
-        fields = ('email',)
-
-
-class PatientCreationForm(UserCreationForm):
-    class Meta:
-        model = Patient
-        fields = ('email',)
+        fields = ('phone',)

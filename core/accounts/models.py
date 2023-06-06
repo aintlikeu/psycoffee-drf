@@ -2,37 +2,36 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 
-USER_ROLES = ('admin', 'customer', 'patient')
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password, **extra_fields):
-        if not email:
-            raise ValueError('The email must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+    def create_user(self, phone, password, **extra_fields):
+        if not phone:
+            raise ValueError('The phone must be set')
+        user = self.model(phone=phone, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, phone, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-        return self.create_user(email, password, **extra_fields)
+        return self.create_user(phone, password, **extra_fields)
 
 
 class User(AbstractUser):
     username = None
-    email = models.EmailField(unique=True, max_length=50)
+    phone = PhoneNumberField(unique=True, region="RU")
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = []
 
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return self.phone
 
 
 class Customer(User):
@@ -40,6 +39,6 @@ class Customer(User):
         verbose_name = 'Customer'
 
 
-class Patient(User):
-    class Meta:
-        verbose_name = 'Patient'
+# class Patient(User):
+#     class Meta:
+#         verbose_name = 'Patient'

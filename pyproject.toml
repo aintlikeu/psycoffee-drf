@@ -10,6 +10,7 @@ packages = [{include = "psycoffee_drf"}]
 python = "^3.11"
 django = "^4.2.1"
 djangorestframework = "^3.14.0"
+django-phonenumber-field = {extras = ["phonenumberslite"], version = "^7.1.0"}
 
 
 [build-system]

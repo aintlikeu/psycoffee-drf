@@ -1,5 +1,7 @@
 from django.db import models
-from accounts.models import Customer, Patient
+from phonenumber_field.modelfields import PhoneNumberField
+
+from accounts.models import Customer
 
 
 class Spot(models.Model):
@@ -11,4 +13,6 @@ class Spot(models.Model):
 
 class Booking(models.Model):
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    phone = PhoneNumberField(region="RU")
+    comment = models.TextField()
