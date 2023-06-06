@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "psycoffee-drf"
+version = "0.1.0"
+description = ""
+authors = ["aintlikeu <alex.goryashkiev@gmail.com>"]
+readme = "README.md"
+packages = [{include = "psycoffee_drf"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.1"
+djangorestframework = "^3.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
