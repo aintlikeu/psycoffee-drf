@@ -16,3 +16,6 @@ __pycache__/
 
 # Sqlite
 core/db.sqlite3
+
+# etc
+.todo

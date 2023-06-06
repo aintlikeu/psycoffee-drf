@@ -11,7 +11,7 @@ class CustomerAdmin(UserAdmin):
     list_display = ('id', 'first_name', 'last_name', 'phone', 'is_active')
     list_filter = ('is_active',)
     search_fields = ('first_name', 'last_name', 'phone')
-    ordering = ('id',)
+    ordering = ('id', 'first_name', 'last_name')
 
     fieldsets = (
         (None, {'fields': ('first_name', 'last_name', 'phone', 'password')}),

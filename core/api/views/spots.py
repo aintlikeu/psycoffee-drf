@@ -20,13 +20,12 @@ class SimpleSpotViewSet(viewsets.ViewSet):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
     def retrieve(self, request, pk=None):
         spot = get_object_or_404(self.queryset, pk=pk)
         serializer = self.serializer_class(spot, many=False)
         return Response(serializer.data)
 
-    def destroy(self, request, pk=None):
-        spot = get_object_or_404(self.queryset, pk=pk)
-        spot.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def destroy(self, request, pk=None):
+    #     spot = get_object_or_404(self.queryset, pk=pk)
+    #     spot.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
