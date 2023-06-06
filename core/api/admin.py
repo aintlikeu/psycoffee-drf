@@ -1,3 +1,5 @@
 from django.contrib import admin
+from api.models import Spot
 
-# Register your models here.
+
+admin.site.register(Spot)

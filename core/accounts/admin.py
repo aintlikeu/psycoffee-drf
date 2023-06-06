@@ -8,19 +8,19 @@ class CustomerAdmin(UserAdmin):
     add_form = CustomerCreationForm
     form = CustomerChangeForm
     model = Customer
-    list_display = ('phone', 'is_active')
+    list_display = ('id', 'first_name', 'last_name', 'phone', 'is_active')
     list_filter = ('is_active',)
-    search_fields = ('phone',)
-    ordering = ('phone',)
+    search_fields = ('first_name', 'last_name', 'phone')
+    ordering = ('id',)
 
     fieldsets = (
-        (None, {'fields': ('phone', 'password')}),
+        (None, {'fields': ('first_name', 'last_name', 'phone', 'password')}),
         ('Permissions', {'fields': ('is_active',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('phone', 'password1', 'password2', 'is_active'),
+            'fields': ('first_name', 'last_name', 'phone', 'password1', 'password2', 'is_active'),
         }),
     )
 

@@ -10,6 +10,9 @@ class Spot(models.Model):
     duration = models.IntegerField()
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.customer}: {self.time}, {self.date} duration {self.duration}'
+
 
 class Booking(models.Model):
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
