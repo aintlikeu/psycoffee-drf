@@ -31,7 +31,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.phone
+        return f'{self.phone}'
 
 
 class Customer(User):
