@@ -1,8 +1,9 @@
 from django.urls import path, include
-
-from api.routers import router
+from api.views.spots import SimpleSpotView
+# from api.routers import router
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('spots/', SimpleSpotView.as_view())
+    # path('', include(router.urls)),
 ]
