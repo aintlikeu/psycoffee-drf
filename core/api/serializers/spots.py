@@ -2,7 +2,7 @@ from rest_framework import serializers
 from datetime import datetime
 
 from api.models import Spot
-from api.services import date_services
+from api.services import date_handlers
 
 DURATION_VALUES = (60, 90, 120)
 
@@ -16,7 +16,7 @@ class SpotWriteSerializer(serializers.ModelSerializer):
 
     def validate_date(self, unix_timestamp):
         try:
-            date = date_services.unix_to_date(unix_timestamp)
+            date = date_handlers.unix_to_date(unix_timestamp)
         except ValueError:
             raise serializers.ValidationError('Некорректный формат даты.')
 
