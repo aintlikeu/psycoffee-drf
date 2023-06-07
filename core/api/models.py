@@ -18,10 +18,13 @@ class Spot(models.Model):
 
 
 class Booking(models.Model):
-    spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
+    spot = models.OneToOneField(Spot, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     phone = PhoneNumberField(region="RU")
     comment = models.TextField()
+
+    def __str__(self):
+        return f'{self.name} ({self.phone}) @ {self.spot.date}, {self.spot.time}, {self.spot.customer.last_name}'
 
     class Meta:
         ordering = ('spot',)

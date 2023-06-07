@@ -47,4 +47,4 @@ class SpotWriteSerializer(serializers.ModelSerializer):
 class SpotReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Spot
-        fields = '__all__'
+        fields = ['customer', 'date', 'time', 'duration', 'booking']
