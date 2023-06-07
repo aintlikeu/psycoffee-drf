@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # other apps
     'phonenumber_field',
+    'django_filters',
     # my apps
     'accounts',
     'api'
