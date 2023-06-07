@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins, status, views, generics
+from rest_framework import status, generics
 
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
@@ -29,4 +29,5 @@ class SimpleSpotView(generics.ListAPIView,
         if customer_id and date:
             delete_spots(customer_id, date, time)
             return Response(status=status.HTTP_204_NO_CONTENT)
+
         return Response(status=status.HTTP_404_NOT_FOUND)

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from datetime import datetime
 
 from api.models import Spot
-from api.services import date_handlers
+from api.services import date_handlers, spots_crud
 
 DURATION_VALUES = (60, 90, 120)
 
@@ -20,12 +20,11 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         time = validated_data.get('time')
         duration = validated_data.get('duration')
 
-        # check if the spot exists
-        spot_existed = Spot.objects.filter(customer=customer, date=date, time=time).first()
+        # if the spot already exists, rewrite duration without creating new instance
+        spot_existed = spots_crud.overwrite_spot(customer, date, time, duration)
         if spot_existed:
-            spot_existed.duration = duration
-            spot_existed.save()
             return spot_existed
+
         return super().create(validated_data)
 
     def validate_date(self, unix_timestamp):
