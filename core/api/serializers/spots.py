@@ -14,6 +14,20 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         model = Spot
         fields = '__all__'
 
+    def create(self, validated_data):
+        customer = validated_data.get('customer')
+        date = validated_data.get('date')
+        time = validated_data.get('time')
+        duration = validated_data.get('duration')
+
+        # check if the spot exists
+        spot_existed = Spot.objects.filter(customer=customer, date=date, time=time).first()
+        if spot_existed:
+            spot_existed.duration = duration
+            spot_existed.save()
+            return spot_existed
+        return super().create(validated_data)
+
     def validate_date(self, unix_timestamp):
         try:
             date = date_handlers.unix_to_date(unix_timestamp)

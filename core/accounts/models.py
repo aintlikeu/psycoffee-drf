@@ -31,7 +31,10 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return f'{self.phone}'
+        return f'{self.first_name} {self.last_name} {self.phone}'
+
+    class Meta:
+        ordering = ('id',)
 
 
 class Customer(User):
