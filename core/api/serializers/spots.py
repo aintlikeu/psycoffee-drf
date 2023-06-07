@@ -2,11 +2,12 @@ from rest_framework import serializers
 from datetime import datetime
 
 from api.models import Spot
+from api.services import date_services
 
 DURATION_VALUES = (60, 90, 120)
 
 
-class SpotSerializer(serializers.ModelSerializer):
+class SpotWriteSerializer(serializers.ModelSerializer):
     date = serializers.IntegerField(write_only=True)
 
     class Meta:
@@ -15,7 +16,7 @@ class SpotSerializer(serializers.ModelSerializer):
 
     def validate_date(self, unix_timestamp):
         try:
-            date = datetime.fromtimestamp(int(unix_timestamp)).date()
+            date = date_services.unix_to_date(unix_timestamp)
         except ValueError:
             raise serializers.ValidationError('Некорректный формат даты.')
 
@@ -30,8 +31,7 @@ class SpotSerializer(serializers.ModelSerializer):
         return duration
 
 
-        # https://www.django-rest-framework.org/api-guide/serializers/
-
-        # {"date": 1686104718, "time": "11:00", "duration": 60, "customer": 2}
-
-        # {"date": 1686018318, "time": "11:00", "duration": 60, "customer": 2}
+class SpotReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Spot
+        fields = '__all__'
