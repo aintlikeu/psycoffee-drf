@@ -1,14 +1,13 @@
 from django_filters import rest_framework as filters
 from rest_framework import generics
 
-from api.filters.spots import BookingFilter
+from api.filters import BookingFilter
 from api.models import Booking
 from api.serializers.bookings import BookingWriteSerializer, BookingReadSerializer
 
 
 class BookingView(generics.ListAPIView,
-                     generics.CreateAPIView,
-                     generics.DestroyAPIView):
+                     generics.CreateAPIView):
 
     queryset = Booking.objects.all()
     serializer_class = BookingWriteSerializer
@@ -21,3 +20,6 @@ class BookingView(generics.ListAPIView,
             return BookingWriteSerializer
         else:
             return BookingReadSerializer
+
+    def delete(self, request):
+        ...

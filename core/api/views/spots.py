@@ -3,7 +3,7 @@ from rest_framework import status, generics
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
-from api.filters.spots import SpotFilter
+from api.filters import SpotFilter
 from api.models import Spot
 from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer
 from api.services.spots_crud import delete_spots
