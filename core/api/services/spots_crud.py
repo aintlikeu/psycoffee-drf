@@ -1,17 +1,19 @@
 from datetime import datetime
 from django.db import models
 from api.models import Spot, Customer
-from api.services.date_handlers import unix_to_date
+from api.services.date_handlers import unix_to_date, time_from_string
 
 
 def delete_spots(customer_id: int,
                  unix_timestamp: int,
                  time_str: str | None = None) -> None:
+
+    # !!! добавить обработку ошибок
     date = unix_to_date(unix_timestamp)
     queryset = Spot.objects.filter(customer__id=customer_id, date=date)
 
     if time_str:
-        time = datetime.strptime(time_str, "%H:%M").time()
+        time = time_from_string(time_str)
         queryset = queryset.filter(time=time)
 
     queryset.delete()
@@ -35,6 +37,9 @@ def get_spot(customer_id: int,
              unix_timestamp: int,
              time_str: str,
              duration: int) -> Spot | None:
+
+    # !!! добавить обработку ошибок
     date = unix_to_date(unix_timestamp)
-    time = datetime.strptime(time_str, "%H:%M").time()
+    time = time_from_string(time_str)
+
     return Spot.objects.filter(customer__id=customer_id, date=date, time=time, duration=duration).first()

@@ -1,9 +1,12 @@
 from django_filters import rest_framework as filters
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 
+from api.exceptions import DateConversionError, TimeConversionError
 from api.filters import BookingFilter
 from api.models import Booking
 from api.serializers.bookings import BookingWriteSerializer, BookingReadSerializer
+from api.services.bookings_crud import delete_bookings
 
 
 class BookingView(generics.ListAPIView,
@@ -22,4 +25,15 @@ class BookingView(generics.ListAPIView,
             return BookingReadSerializer
 
     def delete(self, request):
-        ...
+        customer_id = self.request.data.get('customer_id')
+        date = self.request.data.get('date')
+        time = self.request.data.get('time')
+
+        if customer_id and date and time:
+            try:
+                delete_bookings(customer_id, date, time)
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except (DateConversionError, TimeConversionError) as e:
+                return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_404_NOT_FOUND)

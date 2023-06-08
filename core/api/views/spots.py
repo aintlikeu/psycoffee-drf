@@ -3,6 +3,7 @@ from rest_framework import status, generics
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
+from api.exceptions import DateConversionError, TimeConversionError
 from api.filters import SpotFilter
 from api.models import Spot
 from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer
@@ -27,7 +28,10 @@ class SimpleSpotView(generics.ListAPIView,
         time = self.request.data.get('time')
 
         if customer_id and date:
-            delete_spots(customer_id, date, time)
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            try:
+                delete_spots(customer_id, date, time)
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            except (DateConversionError, TimeConversionError) as e:
+                return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_404_NOT_FOUND)

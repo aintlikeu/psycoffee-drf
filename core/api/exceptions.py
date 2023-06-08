@@ -1,0 +1,6 @@
+class DateConversionError(Exception):
+    ...
+
+
+class TimeConversionError(Exception):
+    ...
