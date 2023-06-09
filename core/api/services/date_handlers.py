@@ -1,4 +1,5 @@
 import datetime
+import time
 from calendar import Calendar
 
 from api.exceptions import DateConversionError, TimeConversionError
@@ -17,6 +18,13 @@ def unix_to_date(unix_timestamp: int | str) -> datetime.date:
         return datetime.datetime.fromtimestamp(int(unix_timestamp)).date()
     except (ValueError, TypeError):
         raise DateConversionError(f'Could not convert date: {unix_timestamp}')
+
+
+def date_to_unix(date: datetime.datetime) -> int:
+    try:
+        return int(time.mktime(date.timetuple()))
+    except (ValueError, TypeError):
+        raise DateConversionError(f'Could not convert date: {date}')
 
 
 def time_from_string(time_str: str) -> datetime.time:
