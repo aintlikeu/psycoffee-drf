@@ -1,5 +1,63 @@
 The project and README are in progress
 
+## Current endpoints
+
+```
+api/simple_spots
+    POST api/simple_spots
+        request format:
+        {
+            "customer_id": <int>,
+            "date": <int unixtimestamp>,
+            "time": <"HH:MM">,   # (e.g. "11:00")
+            "duration": <int>    # (from a list 60, 90, 120)
+        } 
+        
+    GET api/simple_spots
+    GET api/simple_spots?customer_id={customer_id}&date={unixtimestamp}
+    GET api/simple_spots?customer_id={customer_id}&date={unixtimestamp}&whole_month=true
+    
+    DELETE api/simple_spots
+        request format:
+        # delete specific spot
+        {
+            "customer_id": <int>,
+            "date": <int unixtimestamp>,
+            "time": <"HH:MM">,   # (e.g. "11:00")
+        }
+        # delete all spots on that day
+        {
+            "customer_id": <int>,
+            "date": <int unixtimestamp>,
+        }
+        
+api/bookings
+    POST api/bookings
+        request format:
+        {
+            "spot_id": <int>,
+            "duration": <int>,    # (from a list 60, 90, 120),
+            "phone": <str>,       # "+7xxxxxxxxxx" format
+            "name": <str>,
+            "comment": <optional str>
+        }
+        
+    GET api/bookings
+    GET api/bookings?customer_id=<customer_id>&date=<unixtimestamp>
+    GET api/bookings?customer_id=<customer_id>&date=<unixtimestamp>&whole_month=true
+    
+    DELETE api/bookings
+        request format:
+        {
+            "customer_id": <int>,
+            "date": <int unixtimestamp>,
+            "time": <"HH:MM">,   # (e.g. "11:00")
+        }
+        
+api/free_spots
+    GET api/free_spots
+```
+
 ## Quickstart
 To get started with this project, clone the repository:
 ```
