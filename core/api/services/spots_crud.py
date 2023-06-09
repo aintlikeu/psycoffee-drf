@@ -32,14 +32,3 @@ def overwrite_spot(customer: Customer,
         return spot
 
     return None
-
-
-def get_spot(customer_id: int,
-             unix_timestamp: int,
-             time_str: str,
-             duration: int) -> Spot | None:
-
-    date = unix_to_date(unix_timestamp)
-    time = time_from_string(time_str)
-
-    return Spot.objects.filter(customer__id=customer_id, date=date, time=time, duration=duration).first()

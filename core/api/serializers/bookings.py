@@ -1,36 +1,32 @@
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 
-from api.models import Booking
+from api.models import Booking, Spot
 from api.serializers.spots import SpotReadSerializer
-from api.services import spots_crud
 
 
 class BookingWriteSerializer(serializers.ModelSerializer):
-    customer_id = serializers.IntegerField(write_only=True)
-    date = serializers.IntegerField(write_only=True)
-    time = serializers.CharField(write_only=True)
+    spot_id = serializers.IntegerField(write_only=True)
     duration = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Booking
-        fields = ['customer_id', 'date', 'time', 'duration', 'name', 'phone', 'comment']
+        fields = ['spot_id', 'duration', 'name', 'phone', 'comment']
 
     def create(self, validated_data):
-        customer_id = validated_data.pop('customer_id')
-        date = validated_data.pop('date')
-        time = validated_data.pop('time')
+        spot_id = validated_data.pop('spot_id')
         duration = validated_data.pop('duration')
 
-        spot = spots_crud.get_spot(customer_id, date, time, duration)
+        spot = get_object_or_404(Spot, pk=spot_id)
 
-        if spot:
-            if not hasattr(spot, 'booking'):
+        if not hasattr(spot, 'booking'):
+            if spot.duration == duration:
                 validated_data['spot'] = spot
                 return super().create(validated_data)
             else:
-                raise serializers.ValidationError('The spot is already booked')
+                raise serializers.ValidationError('The spot duration is wrong')
         else:
-            raise serializers.ValidationError(f'The specified spot does not exist')
+            raise serializers.ValidationError('The spot is already booked')
 
 
 class BookingReadSerializer(serializers.ModelSerializer):

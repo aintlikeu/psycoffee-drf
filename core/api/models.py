@@ -21,7 +21,7 @@ class Booking(models.Model):
     spot = models.OneToOneField(Spot, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     phone = PhoneNumberField(region="RU")
-    comment = models.TextField()
+    comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.name} ({self.phone}) @ {self.spot.date}, {self.spot.time}, {self.spot.customer.last_name}'
