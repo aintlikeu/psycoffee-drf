@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from datetime import datetime
 
+from rest_framework.generics import get_object_or_404
+
+from accounts.models import Customer
 from api.models import Spot
 from api.services import date_handlers, spots_crud
 
@@ -12,10 +15,13 @@ class SpotWriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Spot
-        fields = '__all__'
+        fields = ['id', 'date', 'time', 'duration', 'customer_id']
 
     def create(self, validated_data):
-        customer = validated_data.get('customer')
+        customer_id = validated_data.pop('customer_id')
+        customer = get_object_or_404(Customer, pk=customer_id)
+        validated_data['customer'] = customer
+
         date = validated_data.get('date')
         time = validated_data.get('time')
         duration = validated_data.get('duration')
@@ -47,4 +53,4 @@ class SpotWriteSerializer(serializers.ModelSerializer):
 class SpotReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Spot
-        fields = ['id', 'customer', 'date', 'time', 'duration', 'booking']
+        fields = ['id', 'customer_id', 'date', 'time', 'duration', 'booking']
