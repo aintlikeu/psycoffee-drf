@@ -17,7 +17,8 @@ __pycache__/
 # Sqlite
 core/db.sqlite3
 
+# Settings
+core/config.yaml
+
 # etc
 .todo
-
-/core/config.yaml
