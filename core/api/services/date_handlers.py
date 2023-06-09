@@ -16,11 +16,11 @@ def unix_to_date(unix_timestamp: int | str) -> datetime.date:
     try:
         return datetime.datetime.fromtimestamp(int(unix_timestamp)).date()
     except (ValueError, TypeError):
-        raise DateConversionError(f'Could not convert unix_timestamp: {unix_timestamp}')
+        raise DateConversionError(f'Could not convert date: {unix_timestamp}')
 
 
 def time_from_string(time_str: str) -> datetime.time:
     try:
         return datetime.datetime.strptime(time_str, "%H:%M").time()
     except ValueError:
-        raise TimeConversionError(f'Could not convert time_str: {time_str}')
+        raise TimeConversionError(f'Could not convert time: {time_str}')

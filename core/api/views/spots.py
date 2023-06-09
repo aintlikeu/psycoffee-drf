@@ -14,7 +14,6 @@ class SimpleSpotView(generics.ListAPIView,
                      generics.CreateAPIView):
     queryset = Spot.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
-
     filterset_class = SpotFilter
 
     def get_serializer_class(self):
@@ -35,3 +34,10 @@ class SimpleSpotView(generics.ListAPIView,
                 return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class FreeSpotView(generics.ListAPIView):
+    queryset = Spot.objects.filter(booking=None)
+    serializer_class = SpotReadSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = SpotFilter
