@@ -1,6 +1,4 @@
-from datetime import datetime
 from django.db import models
-from django.db.models import QuerySet
 
 from api.models import Spot, Customer
 from api.services.date_handlers import unix_to_date, time_from_string

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from api.models import Booking
 from api.services.date_handlers import unix_to_date, time_from_string
 
