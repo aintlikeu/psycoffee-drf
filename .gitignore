@@ -19,3 +19,5 @@ core/db.sqlite3
 
 # etc
 .todo
+
+/core/config.yaml
