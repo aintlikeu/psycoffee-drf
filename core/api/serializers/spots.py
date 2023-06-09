@@ -12,6 +12,7 @@ DURATION_VALUES = (60, 90, 120)
 
 class SpotWriteSerializer(serializers.ModelSerializer):
     date = serializers.IntegerField(write_only=True)
+    customer_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Spot
