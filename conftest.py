@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 
-from accounts.models import User
+from accounts.models import User, Customer
 
 
 @pytest.fixture
@@ -14,3 +14,8 @@ def admin_client(client):
     admin_user = User.objects.create_superuser(phone="+79998887777", password="password123!")
     client.force_login(admin_user)
     return client
+
+
+@pytest.fixture
+def customer():
+    return Customer.objects.create()
