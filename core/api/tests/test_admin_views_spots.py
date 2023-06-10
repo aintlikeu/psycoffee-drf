@@ -14,15 +14,25 @@ from api.serializers.spots import DURATION_VALUES
 class TestSpot:
     endpoint = '/api/spots/'
 
+    @classmethod
+    def _get_date_timestamp(self, shift_days: int) -> int:
+        # get date in unixtimestamp
+        tomorrow_date = datetime.datetime.now() + datetime.timedelta(days=shift_days)
+        return date_to_unix(tomorrow_date)
+
+    @classmethod
+    def _get_random_time_string(self) -> str:
+        # get random time formatted as string
+        hour = random.randint(0, 23)
+        minute = random.randint(0, 59)
+        return f"{hour:02d}:{minute:02d}"
+
     def test_create_valid_data(self, admin_client, customer):
-        # get tomorrow date as unix timestamp
-        tomorrow_date = datetime.datetime.now() + datetime.timedelta(days=1)
-        tomorrow_timestamp = date_to_unix(tomorrow_date)
 
         data = {
             "customer_id": customer.id,
-            "date": tomorrow_timestamp,
-            "time": "12:00",
+            "date": self._get_date_timestamp(shift_days=1),
+            "time": self._get_random_time_string(),
             "duration": random.choice(DURATION_VALUES)
         }
 
