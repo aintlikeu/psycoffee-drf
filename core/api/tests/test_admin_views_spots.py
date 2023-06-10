@@ -1,7 +1,6 @@
 import json
 import pytest
 import datetime
-import time
 import random
 
 from rest_framework import status
@@ -43,10 +42,13 @@ class TestSpot:
     def test_create_existed_spot_another_duration(self, admin_client, customer):
         ...
 
-    def test_create_invalid_date(self, admin_client, customer):
+    def test_create_invalid_date_format(self, admin_client, customer):
         ...
 
-    def test_create_invalid_time(self, admin_client, customer):
+    def test_create_invalid_date_in_the_past(self, admin_client, customer):
+        ...
+
+    def test_create_invalid_time_format(self, admin_client, customer):
         ...
 
     def test_create_invalid_duration(self, admin_client, customer):
