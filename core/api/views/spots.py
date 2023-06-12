@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from rest_framework import status, generics, mixins
 
 from django_filters import rest_framework as filters
@@ -21,7 +23,16 @@ class SimpleSpotView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Ge
         return SpotReadSerializer
 
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        queryset = self.filter_queryset(self.get_queryset())
+
+        grouped_data = defaultdict(list)
+        for spot in queryset:
+            data = self.get_serializer(spot).data
+            date = list(data.keys())[0]
+            time_duration = list(data.values())[0]
+            grouped_data[date].append(time_duration)
+
+        return Response({'spots': dict(grouped_data)})
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)

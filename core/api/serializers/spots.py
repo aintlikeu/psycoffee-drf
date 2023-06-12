@@ -51,7 +51,19 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         return duration
 
 
+class TimeDurationSerializer(serializers.Serializer):
+    time = serializers.TimeField()
+    duration = serializers.IntegerField()
+
+
 class SpotReadSerializer(serializers.ModelSerializer):
+    date = serializers.DateField(format="%d.%m.%Y")
+    time_duration = TimeDurationSerializer(source='*', read_only=True)
+
     class Meta:
         model = Spot
-        fields = ['id', 'customer_id', 'date', 'time', 'duration', 'booking']
+        fields = ['date', 'time_duration']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return {representation['date']: representation['time_duration']}
