@@ -12,7 +12,7 @@ from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer
 from api.services.spots_crud import delete_spots
 
 
-class SimpleSpotView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+class SimpleSpotView(mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Spot.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = SpotFilter
@@ -23,6 +23,12 @@ class SimpleSpotView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Ge
         return SpotReadSerializer
 
     def get(self, request, *args, **kwargs):
+        customer_id = self.request.query_params.get('customer_id')
+        date = self.request.query_params.get('date')
+
+        if customer_id is None or date is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
         queryset = self.filter_queryset(self.get_queryset())
 
         grouped_data = defaultdict(list)
@@ -42,14 +48,14 @@ class SimpleSpotView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.Ge
         date = self.request.data.get('date')
         time = self.request.data.get('time')
 
-        if customer_id and date:
-            try:
-                delete_spots(customer_id, date, time)
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            except (DateConversionError, TimeConversionError) as e:
-                return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        if customer_id is None or date is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        try:
+            delete_spots(customer_id, date, time)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except (DateConversionError, TimeConversionError) as e:
+            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FreeSpotView(generics.ListAPIView):
