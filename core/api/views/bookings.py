@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from rest_framework import generics, status
+from rest_framework import generics, status, mixins
 from rest_framework.response import Response
 
 from api.exceptions import DateConversionError, TimeConversionError
@@ -9,9 +9,7 @@ from api.serializers.bookings import BookingWriteSerializer, BookingReadSerializ
 from api.services.bookings_crud import delete_bookings
 
 
-class BookingView(generics.ListAPIView,
-                     generics.CreateAPIView):
-
+class BookingView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingWriteSerializer
     filter_backends = (filters.DjangoFilterBackend,)
@@ -23,6 +21,12 @@ class BookingView(generics.ListAPIView,
             return BookingWriteSerializer
         else:
             return BookingReadSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
     def delete(self, request):
         customer_id = self.request.data.get('customer_id')
