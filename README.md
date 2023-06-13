@@ -3,8 +3,8 @@ The project and README are in progress
 ## Current endpoints
 
 ```
-api/simple_spots
-    POST api/simple_spots
+api/spots
+    POST api/spots
         request format:
         {
             "customer_id": <int>,
@@ -13,11 +13,11 @@ api/simple_spots
             "duration": <int>    # (from a list 60, 90, 120)
         } 
         
-    GET api/simple_spots
-    GET api/simple_spots?customer_id={customer_id}&date={unixtimestamp}
-    GET api/simple_spots?customer_id={customer_id}&date={unixtimestamp}&whole_month=true
+    GET api/spots
+    GET api/spots?customer_id={customer_id}&date={unixtimestamp}
+    GET api/spots?customer_id={customer_id}&date={unixtimestamp}&whole_month=true
     
-    DELETE api/simple_spots
+    DELETE api/spots
         request format:
         # delete specific spot
         {
