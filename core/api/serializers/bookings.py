@@ -32,16 +32,18 @@ class BookingReadSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     date = serializers.DateField(source='spot.date', format="%d.%m.%Y")
     time = serializers.TimeField(source='spot.time')
+    customer_id = serializers.IntegerField(source='spot.customer_id')
     duration = serializers.IntegerField(source='spot.duration')
 
     class Meta:
         model = Booking
-        fields = ['id', 'date', 'time', 'duration']
+        fields = ['id', 'date', 'time', 'customer_id', 'duration']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         return {representation['date']: {
             "id": representation['id'],
             "time": representation['time'],
-            "duration": representation['duration']}
+            "duration": representation['duration'],
+            "customer_id": representation['customer_id']}
         }

@@ -52,20 +52,20 @@ class SpotWriteSerializer(serializers.ModelSerializer):
 
 
 class SpotReadSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
+    # id = serializers.IntegerField()
     date = serializers.DateField(format="%d.%m.%Y")
-    time = serializers.TimeField()
-    duration = serializers.IntegerField()
+    # time = serializers.TimeField()
+    # duration = serializers.IntegerField()
 
     class Meta:
         model = Spot
-        # fields = ['id', 'date', 'time', 'duration']
-        fields = '__all__'
+        fields = ['id', 'date', 'time', 'duration', 'customer_id']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         return {representation['date']: {
             "id": representation['id'],
             "time": representation['time'],
-            "duration": representation['duration']}
+            "duration": representation['duration'],
+            "customer_id": representation['customer_id']}
         }
