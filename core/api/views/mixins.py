@@ -18,8 +18,8 @@ class CustomSpotListMixin:
         customer_id = self.request.query_params.get('customer_id')
         date = self.request.query_params.get('date')
 
-        if customer_id is None or date is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # if customer_id is None or date is None:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -54,8 +54,8 @@ class CustomBookingListMixin:
         customer_id = self.request.query_params.get('customer_id')
         date = self.request.query_params.get('date')
 
-        if customer_id is None or date is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # if customer_id is None or date is None:
+        #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         queryset = self.filter_queryset(self.get_queryset())
 
