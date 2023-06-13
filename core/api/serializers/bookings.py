@@ -31,7 +31,7 @@ class BookingWriteSerializer(serializers.ModelSerializer):
 class BookingReadSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     date = serializers.DateField(source='spot.date', format="%d.%m.%Y")
-    time = serializers.TimeField(source='spot.time')
+    time = serializers.TimeField(source='spot.time', format="%H:%M")
     customer_id = serializers.IntegerField(source='spot.customer_id')
     duration = serializers.IntegerField(source='spot.duration')
 
