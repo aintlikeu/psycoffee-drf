@@ -1,15 +1,16 @@
 from django_filters import rest_framework as filters
-from rest_framework import generics, mixins
+from rest_framework import generics
 from api.filters import BookingFilter
 from api.models import Booking
 from api.serializers.bookings import BookingWriteSerializer, BookingReadSerializer
-from api.views.mixins import CustomBookingDestroyMixin, CustomSerializerByMethodMixin, CustomBookingListMixin
+from api.views.mixins import CustomBookingDestroyMixin, CustomSerializerByMethodMixin, CustomBookingListMixin, \
+    CustomBookingCreateMixin
 
 
 class BookingView(CustomSerializerByMethodMixin,
                   CustomBookingListMixin,
                   CustomBookingDestroyMixin,
-                  mixins.CreateModelMixin,
+                  CustomBookingCreateMixin,
                   generics.GenericAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingWriteSerializer

@@ -1,16 +1,16 @@
-from rest_framework import generics, mixins
-
+from rest_framework import generics
 from django_filters import rest_framework as filters
 from api.filters import SpotFilter
 from api.models import Spot
 from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer
-from api.views.mixins import CustomSerializerByMethodMixin, CustomSpotListMixin, CustomSpotDestroyMixin
+from api.views.mixins import CustomSerializerByMethodMixin, CustomSpotListMixin, CustomSpotDestroyMixin, \
+    CustomSpotCreateMixin
 
 
 class SimpleSpotView(CustomSerializerByMethodMixin,
                      CustomSpotListMixin,
                      CustomSpotDestroyMixin,
-                     mixins.CreateModelMixin,
+                     CustomSpotCreateMixin,
                      generics.GenericAPIView):
     queryset = Spot.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
