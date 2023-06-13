@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     # other apps
     'phonenumber_field',
     'django_filters',
+    'corsheaders',
+    
     # my apps
     'accounts',
     'api'
@@ -49,7 +51,28 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3002",
+    "http://127.0.0.1:3002",
+]
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "credentials",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-csrf-token",
+    "x-requested-with",
+)
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'core.urls'
 

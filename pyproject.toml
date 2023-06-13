@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["aintlikeu <alex.goryashkiev@gmail.com>"]
 readme = "README.md"
-packages = [{include = "psycoffee_drf"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -16,6 +15,7 @@ factory-boy = "^3.2.1"
 pytest = "^7.3.1"
 pytest-django = "^4.5.2"
 pyyaml = "^6.0"
+django-cors-headers = "^4.0.0"
 
 
 [build-system]
