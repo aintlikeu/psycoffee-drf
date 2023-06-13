@@ -38,7 +38,7 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         duration = validated_data.get('duration')
 
         # if the spot with the same (customer, date, time) exists,
-        # overwrite duration for it without creating new object
+        # overwrite duration without creating new object
         spot_existed = spots_crud.overwrite_spot(customer, date, time, duration)
         if spot_existed:
             return spot_existed
@@ -64,19 +64,19 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         return data
 
     def validate_date(self, unix_timestamp):
-        # check if date is valid
+        # check that date is valid
         try:
             date = date_handlers.unix_to_date(unix_timestamp)
         except (TypeError, ValueError):
             raise serializers.ValidationError('Некорректный формат даты.')
-        # check if date is in the future
+        # check that date is in the future
         if date < datetime.now().date():
             raise serializers.ValidationError('Дата окна не может быть в прошлом.')
 
         return date
 
     def validate_duration(self, duration):
-        # check if duration is in the predefined list
+        # check that duration is in the predefined list
         if duration not in DURATION_VALUES:
             raise serializers.ValidationError(f'Возможные интервалы сессии - {DURATION_VALUES} минут.')
         return duration

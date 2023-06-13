@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
 
 from api.models import Booking, Spot
 
@@ -13,19 +12,27 @@ class BookingWriteSerializer(serializers.ModelSerializer):
         fields = ['spot_id', 'duration', 'name', 'phone', 'comment']
 
     def create(self, validated_data):
-        spot_id = validated_data.pop('spot_id')
-        duration = validated_data.pop('duration')
+        return super().create(validated_data)
 
-        spot = get_object_or_404(Spot, pk=spot_id)
+    def validate(self, data):
+        spot_id = data.pop('spot_id')
+        duration = data.pop('duration')
+        # check that spot exists and replace spot_id by spot, else raise error
+        try:
+            spot = Spot.objects.get(pk=spot_id)
+        except Spot.DoesNotExist:
+            raise serializers.ValidationError({'general': 'Окно с таким spot_id не существует'})
 
+        data['spot'] = spot
+        # check that the duration is correct
         if not hasattr(spot, 'booking'):
-            if spot.duration == duration:
-                validated_data['spot'] = spot
-                return super().create(validated_data)
-            else:
-                raise serializers.ValidationError('The spot duration is wrong')
+            if spot.duration != duration:
+                raise serializers.ValidationError({'general': 'Неверная продолжительность сессии'})
         else:
-            raise serializers.ValidationError('The spot is already booked')
+            # check that the spot is not already booked
+            raise serializers.ValidationError({'general': 'Окно уже забронировано'})
+
+        return data
 
 
 class BookingReadSerializer(serializers.Serializer):
