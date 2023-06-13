@@ -56,6 +56,9 @@ api/bookings
         
 api/free_spots
     GET api/free_spots
+    GET api/free_spots?customer_id={customer_id}&date={unixtimestamp}
+    GET api/free_spots?customer_id={customer_id}&date={unixtimestamp}&whole_month=true
+    
 ```
 
 ## Quickstart

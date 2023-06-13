@@ -52,8 +52,13 @@ class SpotWriteSerializer(serializers.ModelSerializer):
 
 
 class SpotTimeDurationSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     time = serializers.TimeField()
     duration = serializers.IntegerField()
+
+    class Meta:
+        model = Spot
+        fields = ['id', 'time', 'duration']
 
 
 class SpotReadSerializer(serializers.ModelSerializer):
