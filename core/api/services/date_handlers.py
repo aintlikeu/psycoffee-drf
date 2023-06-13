@@ -2,8 +2,6 @@ import datetime
 import time
 from calendar import Calendar
 
-from api.exceptions import DateConversionError, TimeConversionError
-
 
 def get_date_range(input_date: datetime.date) -> tuple[datetime.date, ...]:
     calendar = Calendar(firstweekday=0)
@@ -14,21 +12,12 @@ def get_date_range(input_date: datetime.date) -> tuple[datetime.date, ...]:
 
 
 def unix_to_date(unix_timestamp: int | str) -> datetime.date:
-    try:
-        return datetime.datetime.fromtimestamp(int(unix_timestamp)).date()
-    except (ValueError, TypeError):
-        raise DateConversionError(f'Could not convert date: {unix_timestamp}')
+    return datetime.datetime.fromtimestamp(int(unix_timestamp)).date()
 
 
 def date_to_unix(date: datetime.datetime) -> int:
-    try:
-        return int(time.mktime(date.timetuple()))
-    except (ValueError, TypeError):
-        raise DateConversionError(f'Could not convert date: {date}')
+    return int(time.mktime(date.timetuple()))
 
 
 def time_from_string(time_str: str) -> datetime.time:
-    try:
-        return datetime.datetime.strptime(time_str, "%H:%M").time()
-    except ValueError:
-        raise TimeConversionError(f'Could not convert time: {time_str}')
+    return datetime.datetime.strptime(time_str, "%H:%M").time()

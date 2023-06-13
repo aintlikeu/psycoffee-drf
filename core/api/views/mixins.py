@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
-from api.exceptions import DateConversionError, TimeConversionError
 from api.services.bookings_crud import delete_bookings
 from api.services.spots_crud import delete_spots
 
@@ -51,13 +50,17 @@ class CustomSpotDestroyMixin:
         time = self.request.data.get('time')
 
         if customer_id is None or date is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'success': False,
+                             'errors': {'general': 'Не заданы поля customer_id, date'}},
+                            status=status.HTTP_404_NOT_FOUND)
 
         try:
             delete_spots(customer_id, date, time)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except (DateConversionError, TimeConversionError) as e:
-            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
+        except (TypeError, ValueError) as e:
+            return Response({'success': False,
+                             'errors': {'general': str(e)}},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class CustomSpotCreateMixin:
@@ -117,13 +120,17 @@ class CustomBookingDestroyMixin:
         time = self.request.data.get('time')
 
         if customer_id is None or date is None or time is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({'success': False,
+                             'errors': {'general': 'Не заданы поля customer_id, date, time'}},
+                            status=status.HTTP_404_NOT_FOUND)
 
         try:
             delete_bookings(customer_id, date, time)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except (DateConversionError, TimeConversionError) as e:
-            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
+        except (TypeError, ValueError) as e:
+            return Response({'success': False,
+                             'errors': {'general': str(e)}},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class CustomBookingCreateMixin:
