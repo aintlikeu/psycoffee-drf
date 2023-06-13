@@ -10,11 +10,17 @@ from api.services.spots_crud import delete_spots
 
 
 class CustomSerializerByMethodMixin:
+    """
+    Mixin to allow different serializers to be used depending on the request method type.
+    """
     def get_serializer_class(self, *args, **kwargs):
         return self.serializer_map.get(self.request.method, self.serializer_class)
 
 
 class CustomSpotListMixin:
+    """
+    Mixin for listing Spot instances, grouped by date.
+    """
     def list(self, request, *args, **kwargs):
         customer_id = self.request.query_params.get('customer_id')
         date = self.request.query_params.get('date')
@@ -24,6 +30,7 @@ class CustomSpotListMixin:
 
         queryset = self.filter_queryset(self.get_queryset())
 
+        # group spots by date
         grouped_data = defaultdict(list)
         for spot in queryset:
             data = self.get_serializer(spot).data
@@ -35,6 +42,9 @@ class CustomSpotListMixin:
 
 
 class CustomSpotDestroyMixin:
+    """
+    Mixin for deleting Spot instances.
+    """
     def destroy(self, request):
         customer_id = self.request.data.get('customer_id')
         date = self.request.data.get('date')
@@ -51,6 +61,9 @@ class CustomSpotDestroyMixin:
 
 
 class CustomSpotCreateMixin:
+    """
+    Mixin for creating Spot instances.
+    """
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
@@ -70,6 +83,9 @@ class CustomSpotCreateMixin:
 
 
 class CustomBookingListMixin:
+    """
+    Mixin for listing Booking instances, grouped by date.
+    """
     def list(self, request, *args, **kwargs):
         customer_id = self.request.query_params.get('customer_id')
         date = self.request.query_params.get('date')
@@ -80,6 +96,8 @@ class CustomBookingListMixin:
         queryset = self.filter_queryset(self.get_queryset())
 
         grouped_data = defaultdict(list)
+
+        # group bookings by date
         for booking in queryset:
             data = self.get_serializer(booking).data
             date = list(data.keys())[0]
@@ -90,6 +108,9 @@ class CustomBookingListMixin:
 
 
 class CustomBookingDestroyMixin:
+    """
+    Mixin for deleting Booking instances.
+    """
     def destroy(self, request):
         customer_id = self.request.data.get('customer_id')
         date = self.request.data.get('date')
@@ -106,6 +127,9 @@ class CustomBookingDestroyMixin:
 
 
 class CustomBookingCreateMixin:
+    """
+    Mixin for creating Booking instances.
+    """
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
