@@ -1,61 +1,34 @@
-from collections import defaultdict
-
-from rest_framework import status, generics, mixins
+from rest_framework import generics, mixins
 
 from django_filters import rest_framework as filters
-from rest_framework.response import Response
-
-from api.exceptions import DateConversionError, TimeConversionError
 from api.filters import SpotFilter
 from api.models import Spot
 from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer
-from api.services.spots_crud import delete_spots
+from api.views.mixins import CustomSerializerByMethodMixin, CustomSpotListMixin, CustomSpotDestroyMixin
 
 
-class SimpleSpotView(mixins.CreateModelMixin, generics.GenericAPIView):
+class SimpleSpotView(CustomSerializerByMethodMixin,
+                     CustomSpotListMixin,
+                     CustomSpotDestroyMixin,
+                     mixins.CreateModelMixin,
+                     generics.GenericAPIView):
     queryset = Spot.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = SpotFilter
 
-    def get_serializer_class(self):
-        if self.request.method == 'POST':
-            return SpotWriteSerializer
-        return SpotReadSerializer
+    serializer_map = {
+        'GET': SpotReadSerializer,
+        'POST': SpotWriteSerializer
+    }
 
     def get(self, request, *args, **kwargs):
-        customer_id = self.request.query_params.get('customer_id')
-        date = self.request.query_params.get('date')
-
-        if customer_id is None or date is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        queryset = self.filter_queryset(self.get_queryset())
-
-        grouped_data = defaultdict(list)
-        for spot in queryset:
-            data = self.get_serializer(spot).data
-            date = list(data.keys())[0]
-            time_duration = list(data.values())[0]
-            grouped_data[date].append(time_duration)
-
-        return Response({'spots': dict(grouped_data)})
+        return self.list(self, request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
     def delete(self, request):
-        customer_id = self.request.data.get('customer_id')
-        date = self.request.data.get('date')
-        time = self.request.data.get('time')
-
-        if customer_id is None or date is None:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        try:
-            delete_spots(customer_id, date, time)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except (DateConversionError, TimeConversionError) as e:
-            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return self.destroy(request)
 
 
 class FreeSpotView(generics.ListAPIView):

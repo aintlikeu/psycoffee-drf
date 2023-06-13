@@ -51,14 +51,14 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         return duration
 
 
-class TimeDurationSerializer(serializers.Serializer):
+class SpotTimeDurationSerializer(serializers.Serializer):
     time = serializers.TimeField()
     duration = serializers.IntegerField()
 
 
 class SpotReadSerializer(serializers.ModelSerializer):
     date = serializers.DateField(format="%d.%m.%Y")
-    time_duration = TimeDurationSerializer(source='*', read_only=True)
+    time_duration = SpotTimeDurationSerializer(source='*', read_only=True)
 
     class Meta:
         model = Spot

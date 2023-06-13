@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
 from api.models import Booking, Spot
-from api.serializers.spots import SpotReadSerializer
 
 
 class BookingWriteSerializer(serializers.ModelSerializer):
@@ -29,9 +28,23 @@ class BookingWriteSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('The spot is already booked')
 
 
-class BookingReadSerializer(serializers.ModelSerializer):
-    spot = SpotReadSerializer()
+class BookingTimeDurationSerializer(serializers.ModelSerializer):
+    time = serializers.TimeField(source='spot.time')
+    duration = serializers.IntegerField(source='spot.duration')
 
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ['time', 'duration']
+
+
+class BookingReadSerializer(serializers.Serializer):
+    date = serializers.DateField(source='spot.date', format="%d.%m.%Y")
+    time_duration = BookingTimeDurationSerializer(source='*', read_only=True)
+
+    class Meta:
+        model = Booking
+        fields = ['date', 'time_duration']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return {representation['date']: representation['time_duration']}
