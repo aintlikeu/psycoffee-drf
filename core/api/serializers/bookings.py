@@ -28,24 +28,20 @@ class BookingWriteSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('The spot is already booked')
 
 
-class BookingInfoSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
+class BookingReadSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    date = serializers.DateField(source='spot.date', format="%d.%m.%Y")
     time = serializers.TimeField(source='spot.time')
     duration = serializers.IntegerField(source='spot.duration')
 
     class Meta:
         model = Booking
-        fields = ['id', 'time', 'duration']
-
-
-class BookingReadSerializer(serializers.Serializer):
-    date = serializers.DateField(source='spot.date', format="%d.%m.%Y")
-    booking_info = BookingInfoSerializer(source='*', read_only=True)
-
-    class Meta:
-        model = Booking
-        fields = ['date', 'booking_info']
+        fields = ['id', 'date', 'time', 'duration']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        return {representation['date']: representation['booking_info']}
+        return {representation['date']: {
+            "id": representation['id'],
+            "time": representation['time'],
+            "duration": representation['duration']}
+        }
