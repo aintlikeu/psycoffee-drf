@@ -31,8 +31,12 @@ class SimpleSpotView(CustomSerializerByMethodMixin,
         return self.destroy(request)
 
 
-class FreeSpotView(generics.ListAPIView):
+class FreeSpotView(CustomSpotListMixin,
+                   generics.GenericAPIView):
     queryset = Spot.objects.filter(booking=None)
     serializer_class = SpotReadSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = SpotFilter
+
+    def get(self, request, *args, **kwargs):
+        return self.list(self, request, *args, **kwargs)
