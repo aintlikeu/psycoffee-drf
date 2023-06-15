@@ -2,7 +2,7 @@ from rest_framework import generics
 from django_filters import rest_framework as filters
 from api.filters import SpotFilter
 from api.models import Spot
-from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer
+from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer, FreeSpotReadSerializer
 from api.views.mixins import CustomSerializerByMethodMixin, CustomSpotListMixin, CustomSpotDestroyMixin, \
     CustomSpotCreateMixin
 
@@ -34,7 +34,7 @@ class SimpleSpotView(CustomSerializerByMethodMixin,
 class FreeSpotView(CustomSpotListMixin,
                    generics.GenericAPIView):
     queryset = Spot.objects.filter(booking=None)
-    serializer_class = SpotReadSerializer
+    serializer_class = FreeSpotReadSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = SpotFilter
 

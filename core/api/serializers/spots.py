@@ -98,3 +98,10 @@ class SpotReadSerializer(serializers.ModelSerializer):
             "duration": representation['duration'],
             "customer_id": representation['customer_id']}
         }
+
+
+class FreeSpotReadSerializer(SpotReadSerializer):
+    duration = serializers.SerializerMethodField()
+
+    def get_duration(self, obj):
+        return [i for i in DURATION_VALUES if i <= obj.duration]
