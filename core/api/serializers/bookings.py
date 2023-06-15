@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from api.messages import SPOT_DOES_NOT_EXIST, INCORRECT_SPOT_TIME, SPOT_ALREADY_BOOKED
 from api.models import Booking, Spot
 
 
@@ -21,16 +22,16 @@ class BookingWriteSerializer(serializers.ModelSerializer):
         try:
             spot = Spot.objects.get(pk=spot_id)
         except Spot.DoesNotExist:
-            raise serializers.ValidationError({'general': 'Окно с таким spot_id не существует'})
+            raise serializers.ValidationError({'general': SPOT_DOES_NOT_EXIST})
 
         data['spot'] = spot
         # check that the duration is correct
         if not hasattr(spot, 'booking'):
             if duration > spot.duration:
-                raise serializers.ValidationError({'general': 'Неверная продолжительность сессии'})
+                raise serializers.ValidationError({'general': INCORRECT_SPOT_TIME})
         else:
             # check that the spot is not already booked
-            raise serializers.ValidationError({'general': 'Окно уже забронировано'})
+            raise serializers.ValidationError({'general': SPOT_ALREADY_BOOKED})
 
         return data
 

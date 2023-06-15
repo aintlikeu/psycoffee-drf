@@ -4,6 +4,8 @@ from datetime import datetime
 from accounts.models import Customer
 from api.models import Spot
 from api.services import date_handlers, spots_crud
+from api.messages import INCORRECT_DATE_FORMAT, INCORRECT_SPOT_TIME, CUSTOMER_DOES_NOT_EXIST, SPOT_ALREADY_EXIST, \
+    INCORRECT_DATE, INCORRECT_SPOT_DURATION
 
 DURATION_VALUES = (60, 90, 120)
 
@@ -11,14 +13,14 @@ DURATION_VALUES = (60, 90, 120)
 class CustomDateField(serializers.IntegerField):
     # Custom field for returning custom error message
     default_error_messages = {
-        "invalid": "Некорректный формат даты"
+        "invalid": INCORRECT_DATE_FORMAT
     }
 
 
 class CustomTimeField(serializers.TimeField):
     # Custom field for returning custom error message
     default_error_messages = {
-        "invalid": "Некорректное время сессии"
+        "invalid": INCORRECT_SPOT_TIME
     }
 
 
@@ -51,7 +53,7 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         try:
             data['customer'] = Customer.objects.get(pk=customer_id)
         except Customer.DoesNotExist:
-            raise serializers.ValidationError({'general': 'Пользователя с таким customer_id не существует'})
+            raise serializers.ValidationError({'general': CUSTOMER_DOES_NOT_EXIST})
 
         # if spot exists, raise error
         spot_exist = Spot.objects.filter(date=data['date'],
@@ -59,7 +61,7 @@ class SpotWriteSerializer(serializers.ModelSerializer):
                                          customer=data['customer'],
                                          duration=data['duration']).exists()
         if spot_exist:
-            raise serializers.ValidationError({'general': 'Такое окно уже существует'})
+            raise serializers.ValidationError({'general': SPOT_ALREADY_EXIST})
 
         return data
 
@@ -68,17 +70,17 @@ class SpotWriteSerializer(serializers.ModelSerializer):
         try:
             date = date_handlers.unix_to_date(unix_timestamp)
         except (TypeError, ValueError):
-            raise serializers.ValidationError('Некорректный формат даты.')
+            raise serializers.ValidationError(INCORRECT_DATE_FORMAT)
         # check that date is in the future
         if date < datetime.now().date():
-            raise serializers.ValidationError('Дата окна не может быть в прошлом.')
+            raise serializers.ValidationError(INCORRECT_DATE)
 
         return date
 
     def validate_duration(self, duration):
         # check that duration is in the predefined list
         if duration not in DURATION_VALUES:
-            raise serializers.ValidationError(f'Возможные интервалы сессии - {DURATION_VALUES} минут.')
+            raise serializers.ValidationError(INCORRECT_SPOT_DURATION)
         return duration
 
 

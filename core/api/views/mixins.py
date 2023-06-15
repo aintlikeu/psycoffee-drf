@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
+from api.messages import NO_FIELDS_CUSTOMER_DATE, NO_FIELDS_CUSTOMER_DATE_TIME
 from api.services.bookings_crud import delete_bookings
 from api.services.spots_crud import delete_spots
 
@@ -51,7 +52,7 @@ class CustomSpotDestroyMixin:
 
         if customer_id is None or date is None:
             return Response({'success': False,
-                             'errors': {'general': 'Не заданы поля customer_id, date'}},
+                             'errors': {'general': NO_FIELDS_CUSTOMER_DATE}},
                             status=status.HTTP_404_NOT_FOUND)
 
         try:
@@ -121,7 +122,7 @@ class CustomBookingDestroyMixin:
 
         if customer_id is None or date is None or time is None:
             return Response({'success': False,
-                             'errors': {'general': 'Не заданы поля customer_id, date, time'}},
+                             'errors': {'general': NO_FIELDS_CUSTOMER_DATE_TIME}},
                             status=status.HTTP_404_NOT_FOUND)
 
         try:
