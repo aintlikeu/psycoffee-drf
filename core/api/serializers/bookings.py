@@ -5,7 +5,7 @@ from api.models import Booking, Spot
 
 class BookingWriteSerializer(serializers.ModelSerializer):
     spot_id = serializers.IntegerField(write_only=True)
-    duration = serializers.IntegerField(write_only=True)
+    duration = serializers.IntegerField()
 
     class Meta:
         model = Booking
@@ -16,7 +16,7 @@ class BookingWriteSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         spot_id = data.pop('spot_id')
-        duration = data.pop('duration')
+        duration = data.get('duration')
         # check that spot exists and replace spot_id by spot, else raise error
         try:
             spot = Spot.objects.get(pk=spot_id)
@@ -26,7 +26,7 @@ class BookingWriteSerializer(serializers.ModelSerializer):
         data['spot'] = spot
         # check that the duration is correct
         if not hasattr(spot, 'booking'):
-            if spot.duration != duration:
+            if duration > spot.duration:
                 raise serializers.ValidationError({'general': 'Неверная продолжительность сессии'})
         else:
             # check that the spot is not already booked
@@ -40,7 +40,7 @@ class BookingReadSerializer(serializers.Serializer):
     date = serializers.DateField(source='spot.date', format="%d.%m.%Y")
     time = serializers.TimeField(source='spot.time', format="%H:%M")
     customer_id = serializers.IntegerField(source='spot.customer_id')
-    duration = serializers.IntegerField(source='spot.duration')
+    duration = serializers.IntegerField()
 
     class Meta:
         model = Booking

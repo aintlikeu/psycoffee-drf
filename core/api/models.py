@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from rest_framework.exceptions import ValidationError
 
 from accounts.models import Customer
 
@@ -22,6 +23,7 @@ class Booking(models.Model):
     name = models.CharField(max_length=100)
     phone = PhoneNumberField(region="RU")
     comment = models.TextField(blank=True, default="")
+    duration = models.IntegerField()
 
     def __str__(self):
         return f'{self.name} ({self.phone}) @ {self.spot.date}, {self.spot.time}, {self.spot.customer.last_name}'

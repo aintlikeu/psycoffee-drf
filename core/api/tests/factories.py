@@ -1,3 +1,5 @@
+import random
+
 import factory
 
 from accounts.models import Customer
@@ -38,6 +40,7 @@ class BookingFactory(factory.django.DjangoModelFactory):
     # just to differentiate
     phone = factory.Sequence(lambda n: '+799%07d' % n)
     comment = factory.Faker('sentence')
+    duration = factory.LazyAttribute(lambda o: random.choice([i for i in DURATION_VALUES if i <= o.spot.duration]))
 
     class Meta:
         model = Booking
