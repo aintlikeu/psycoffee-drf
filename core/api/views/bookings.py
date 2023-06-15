@@ -13,7 +13,6 @@ class BookingView(CustomSerializerByMethodMixin,
                   CustomBookingCreateMixin,
                   generics.GenericAPIView):
     queryset = Booking.objects.all()
-    serializer_class = BookingWriteSerializer
     filter_backends = (filters.DjangoFilterBackend,)
 
     filterset_class = BookingFilter

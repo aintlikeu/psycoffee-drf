@@ -34,8 +34,8 @@ class CustomSpotListMixin:
         for spot in queryset:
             data = self.get_serializer(spot).data
             date = list(data.keys())[0]
-            time_duration = list(data.values())[0]
-            grouped_data[date].append(time_duration)
+            spot_info = list(data.values())[0]
+            grouped_data[date].append(spot_info)
 
         return Response({'spots': dict(grouped_data)})
 
@@ -104,8 +104,8 @@ class CustomBookingListMixin:
         for booking in queryset:
             data = self.get_serializer(booking).data
             date = list(data.keys())[0]
-            time_duration = list(data.values())[0]
-            grouped_data[date].append(time_duration)
+            booking_info = list(data.values())[0]
+            grouped_data[date].append(booking_info)
 
         return Response({'bookings': dict(grouped_data)})
 
