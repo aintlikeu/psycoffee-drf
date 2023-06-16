@@ -57,7 +57,7 @@ class CustomSpotDestroyMixin:
 
         try:
             delete_spots(customer_id, date, time)
-            return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'success': True}, status=status.HTTP_200_OK)
         except (TypeError, ValueError) as e:
             return Response({'success': False,
                              'errors': {'general': str(e)}},
@@ -127,7 +127,7 @@ class CustomBookingDestroyMixin:
 
         try:
             delete_bookings(customer_id, date, time)
-            return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'success': True}, status=status.HTTP_200_OK)
         except (TypeError, ValueError) as e:
             return Response({'success': False,
                              'errors': {'general': str(e)}},

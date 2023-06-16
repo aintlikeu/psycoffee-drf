@@ -175,16 +175,16 @@ class TestSpot:
             "time": time_to_string(spot.time)
         }
 
-        # expected_response = {
-        #     "success": True
-        # }
+        expected_response = {
+            "success": True
+        }
 
         response = admin_client.delete(self.endpoint, data=data)
-        # response_json = json.loads(response.content)
+        response_json = json.loads(response.content)
 
-        # assert response_json == expected_response
+        assert response_json == expected_response
         assert len(Spot.objects.all()) == 0
-        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert response.status_code == status.HTTP_200_OK
 
     def test_delete_valid_all_for_the_day(self, admin_client, customer):
         # size of batch, use value > 1 and <= max spots per day
@@ -204,19 +204,19 @@ class TestSpot:
             "date": date_to_unix(date)
         }
 
-        # expected_response ={
-        #     "success": True
-        # }
+        expected_response ={
+            "success": True
+        }
 
         after_spots_on_date = Spot.objects.filter(date=date)
 
         response = admin_client.delete(self.endpoint, data=data)
-        # response_json = json.loads(response.content)
+        response_json = json.loads(response.content)
 
-        # assert response_json == expected_response
+        assert response_json == expected_response
         assert len(before_spots_on_date) > 0
         assert len(after_spots_on_date) == 0
-        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert response.status_code == status.HTTP_200_OK
 
     #
     # def test_delete_invalid(self, admin_client, customer):
