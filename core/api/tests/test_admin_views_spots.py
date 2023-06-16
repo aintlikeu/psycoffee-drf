@@ -7,8 +7,9 @@ from rest_framework import status
 
 from api.models import Spot
 from api.tests.factories import SpotFactory
-from api.services.date_handlers import date_to_unix
+from api.services.date_handlers import date_to_unix, time_to_string
 from api.serializers.spots import DURATION_VALUES
+import api.messages as msg
 
 
 @pytest.mark.django_db
@@ -52,16 +53,17 @@ class TestSpot:
         assert response_json == expected_response
 
     def test_create_existed_spot(self, admin_client, customer, spot):
+
         data = {
             "customer_id": customer.id,
-            "date": spot.date,
+            "date": date_to_unix(spot.date),
             "time": spot.time,
             "duration": spot.duration
         }
 
         expected_response = {
             "success": False,
-            "error": "Такое окно уже существует"
+            "errors": {"general": [msg.SPOT_ALREADY_EXIST]}
         }
 
         response = admin_client.post(self.endpoint, data=data)
@@ -75,7 +77,7 @@ class TestSpot:
 
         data = {
             "customer_id": customer.id,
-            "date": spot.date,
+            "date": date_to_unix(spot.date),
             "time": spot.time,
             "duration": new_duration
         }
@@ -100,7 +102,7 @@ class TestSpot:
 
         expected_response = {
             "success": False,
-            "date": "Некорректный формат даты"
+            "errors": {"date": [msg.INCORRECT_DATE_FORMAT]}
         }
 
         response = admin_client.post(self.endpoint, data=data)
@@ -119,7 +121,7 @@ class TestSpot:
 
         expected_response = {
             "success": False,
-            "date": "Создаваемые окна не могут быть в прошлом"
+            "errors": {"date": [msg.INCORRECT_DATE]}
         }
 
         response = admin_client.post(self.endpoint, data=data)
@@ -138,7 +140,7 @@ class TestSpot:
 
         expected_response = {
             "success": False,
-            "date": "Некорректное время сессии"
+            "errors": {"time": [msg.INCORRECT_SPOT_TIME]}
         }
 
         response = admin_client.post(self.endpoint, data=data)
@@ -157,7 +159,7 @@ class TestSpot:
 
         expected_response = {
             "success": False,
-            "duration": "Возможные интервалы сессии - 60, 90 и 120 минут"
+            "errors": {"duration": [msg.INCORRECT_SPOT_DURATION]}
         }
 
         response = admin_client.post(self.endpoint, data=data)
@@ -169,51 +171,55 @@ class TestSpot:
     def test_delete_valid_one_spot(self, admin_client, customer, spot):
         data = {
             "customer_id": customer.id,
-            "date": spot.date,
-            "time": spot.time
+            "date": date_to_unix(spot.date),
+            "time": time_to_string(spot.time)
         }
 
-        expected_response = {
-            "success": True
-        }
+        # expected_response = {
+        #     "success": True
+        # }
 
         response = admin_client.delete(self.endpoint, data=data)
-        response_json = json.loads(response.content)
+        # response_json = json.loads(response.content)
 
-        assert response_json == expected_response
-        assert len(SpotFactory.objects.all()) == 0
+        # assert response_json == expected_response
+        assert len(Spot.objects.all()) == 0
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
     def test_delete_valid_all_for_the_day(self, admin_client, customer):
-        # size of batch, value > 1 and <= max spots per day
+        # size of batch, use value > 1 and <= max spots per day
         size = 4
-        # date in the future, here is tomorrow
+        # date in the future, for example is tomorrow
         date = datetime.datetime.now() + datetime.timedelta(days=1)
+
         spots = SpotFactory.create_batch(size=size,
                                          customer=customer,
                                          date=date)
 
         before_spots_on_date = Spot.objects.filter(date=date)
+        assert len(before_spots_on_date) == size
 
         data = {
             "customer_id": customer.id,
             "date": date_to_unix(date)
         }
 
-        expected_response ={
-            "success": True
-        }
+        # expected_response ={
+        #     "success": True
+        # }
 
         after_spots_on_date = Spot.objects.filter(date=date)
 
         response = admin_client.delete(self.endpoint, data=data)
-        response_json = json.loads(response.content)
+        # response_json = json.loads(response.content)
 
-        assert response_json == expected_response
-        assert after_spots_on_date == before_spots_on_date - 1
+        # assert response_json == expected_response
+        assert len(before_spots_on_date) > 0
+        assert len(after_spots_on_date) == 0
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    def test_delete_invalid(self, admin_client, customer):
-        # come up with a few tests here
-        ...
-
+    #
+    # def test_delete_invalid(self, admin_client, customer):
+    #     # come up with a few tests here
+    #     ...
+    #

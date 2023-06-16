@@ -21,3 +21,7 @@ def date_to_unix(date: datetime.datetime) -> int:
 
 def time_from_string(time_str: str) -> datetime.time:
     return datetime.datetime.strptime(time_str, "%H:%M").time()
+
+
+def time_to_string(time_obj: datetime.time) -> str:
+    return time_obj.strftime("%H:%M")

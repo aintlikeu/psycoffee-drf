@@ -1,4 +1,5 @@
 import random
+import datetime
 
 import factory
 
@@ -21,8 +22,9 @@ class CustomerFactory(factory.django.DjangoModelFactory):
 # Prefer to use with the argument customer=(Customer object)
 # customer defined as factory.Iterator to prevent creating new instances of Customer
 class SpotFactory(factory.django.DjangoModelFactory):
-    date = factory.Faker('date')
-    time = factory.Faker('time')
+    date = factory.Faker('future_date', end_date='+30d')
+    # time = factory.Faker('time_object')
+    time = factory.LazyAttribute(lambda o: datetime.time(hour=random.randint(0, 23), minute=random.randint(0, 59)))
     duration = factory.Faker('random_element', elements=DURATION_VALUES)
     customer = factory.Iterator(Customer.objects.all())
 
