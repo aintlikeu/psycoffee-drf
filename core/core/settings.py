@@ -150,5 +150,32 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-LOGIN_URL = '/drf-auth/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/api/login_user/'
+LOGIN_REDIRECT_URL = '/api/free_spots/'
+
+# DRF settings
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication'
+    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
+    # 'DEFAULT_THROTTLE_CLASSES': [],
+    # 'DEFAULT_CONTENT_NEGOTIATION_CLASS': [
+    #     'rest_framework.negotiation.DefaultContentNegotiation'
+    # ],
+    # 'DEFAULT_SCHEMA_CLASS': [
+    #     'rest_framework.schemas.openapi.AutoSchema'
+    # ],
+}

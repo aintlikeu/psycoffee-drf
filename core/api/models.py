@@ -22,7 +22,7 @@ class Booking(models.Model):
     spot = models.OneToOneField(Spot, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     phone = PhoneNumberField(region="RU")
-    comment = models.TextField(blank=True, default="")
+    comment = models.TextField(blank=True, default="", max_length=500)
     duration = models.IntegerField()
 
     def __str__(self):
