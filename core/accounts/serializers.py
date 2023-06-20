@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 
-from phonenumber_field.modelfields import PhoneNumberField
+from api.messages import INCORRECT_PHONE_OR_PASSWORD, REQUIRED_PHONE_AND_PASSWORD
 
 
 class LoginSerializer(serializers.Serializer):
@@ -30,9 +30,9 @@ class LoginSerializer(serializers.Serializer):
                                 password=password)
             if not user:
                 # If there is no user with this credentials
-                raise serializers.ValidationError("Неверный телефон или пароль")
+                raise serializers.ValidationError({'general': INCORRECT_PHONE_OR_PASSWORD})
         else:
-            raise serializers.ValidationError("Введите телефон и пароль")
+            raise serializers.ValidationError({'general': REQUIRED_PHONE_AND_PASSWORD})
 
         attrs['user'] = user
         return attrs

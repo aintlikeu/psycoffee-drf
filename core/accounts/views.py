@@ -11,7 +11,8 @@ class LoginView(views.APIView):
 
     def post(self, request, format=None):
         serializer = LoginSerializer(data=self.request.data, context={'request': self.request})
-        serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid():
+            return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         user = serializer.validated_data['user']
         login(request, user)
-        return Response(None, status=status.HTTP_202_ACCEPTED)
+        return Response({"success": True}, status=status.HTTP_202_ACCEPTED)

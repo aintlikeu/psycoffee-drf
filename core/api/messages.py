@@ -7,7 +7,11 @@ INCORRECT_SPOT_DURATION = "Возможные интервалы сессии 60
 INCORRECT_DATE_FORMAT = "Некорректный формат даты"
 INCORRECT_DATE = "Дата окна не может быть в прошлом"
 CUSTOMER_DOES_NOT_EXIST = "Пользователя с таким customer_id не существует"
+# serializers accounts
+INCORRECT_PHONE_OR_PASSWORD = "Неверный телефон или пароль"
+REQUIRED_PHONE_AND_PASSWORD = "Введите телефон и пароль"
 
 # views
 NO_FIELDS_CUSTOMER_DATE = "Не заданы поля customer_id, date"
 NO_FIELDS_CUSTOMER_DATE_TIME = "Не заданы поля customer_id, date, time"
+
