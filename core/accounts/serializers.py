@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
 
 from rest_framework import serializers
 
@@ -62,3 +61,9 @@ class SignupSerializer(serializers.ModelSerializer):
         user = Patient.objects.create_user(phone=validated_data['phone'],
                                            password=validated_data['password'])
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = ('phone', 'first_name', 'last_name', 'email', 'description')

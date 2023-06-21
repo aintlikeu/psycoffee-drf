@@ -1,3 +1,4 @@
+from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 
@@ -23,6 +24,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     phone = PhoneNumberField(unique=True, region="RU")
+    description = models.TextField(blank=True, default="", max_length=500)
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = []

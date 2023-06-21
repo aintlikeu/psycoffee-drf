@@ -1,10 +1,11 @@
 from django.contrib.auth import login, logout
 from rest_framework import permissions, status, generics
 from rest_framework import views
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from accounts.models import Patient
-from accounts.serializers import LoginSerializer, SignupSerializer
+from accounts.serializers import LoginSerializer, SignupSerializer, ProfileSerializer
 from api.views.mixins import CustomSerializerByMethodMixin, CustomCreateMixin
 
 
@@ -40,3 +41,11 @@ class SignupView(CustomSerializerByMethodMixin,
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+class ProfileView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
