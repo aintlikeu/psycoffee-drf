@@ -64,26 +64,26 @@ class CustomSpotDestroyMixin:
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-class CustomSpotCreateMixin:
-    """
-    Mixin for creating Spot instances.
-    """
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if not serializer.is_valid():
-            return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response({"success": True}, status=status.HTTP_201_CREATED, headers=headers)
-
-    def perform_create(self, serializer):
-        serializer.save()
-
-    def get_success_headers(self, data):
-        try:
-            return {'Location': str(data[api_settings.URL_FIELD_NAME])}
-        except (TypeError, KeyError):
-            return {}
+# class CustomSpotCreateMixin:
+#     """
+#     Mixin for creating Spot instances.
+#     """
+#     def create(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         if not serializer.is_valid():
+#             return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+#         self.perform_create(serializer)
+#         headers = self.get_success_headers(serializer.data)
+#         return Response({"success": True}, status=status.HTTP_201_CREATED, headers=headers)
+#
+#     def perform_create(self, serializer):
+#         serializer.save()
+#
+#     def get_success_headers(self, data):
+#         try:
+#             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
+#         except (TypeError, KeyError):
+#             return {}
 
 
 class CustomBookingListMixin:
@@ -134,10 +134,29 @@ class CustomBookingDestroyMixin:
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-class CustomBookingCreateMixin:
-    """
-    Mixin for creating Booking instances.
-    """
+# class CustomBookingCreateMixin:
+#     """
+#     Mixin for creating Booking instances.
+#     """
+#     def create(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         if not serializer.is_valid():
+#             return Response({"success": False, "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+#         self.perform_create(serializer)
+#         headers = self.get_success_headers(serializer.data)
+#         return Response({"success": True}, status=status.HTTP_201_CREATED, headers=headers)
+#
+#     def perform_create(self, serializer):
+#         serializer.save()
+#
+#     def get_success_headers(self, data):
+#         try:
+#             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
+#         except (TypeError, KeyError):
+#             return {}
+#
+
+class CustomCreateMixin:
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():

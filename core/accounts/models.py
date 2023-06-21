@@ -41,6 +41,6 @@ class Customer(User):
         verbose_name = 'Customer'
 
 
-# class Patient(User):
-#     class Meta:
-#         verbose_name = 'Patient'
+class Patient(User):
+    class Meta:
+        verbose_name = 'Patient'

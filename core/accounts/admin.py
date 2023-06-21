@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from accounts.models import Customer
+from accounts.models import Customer, Patient
 from accounts.forms import CustomerChangeForm, CustomerCreationForm
 
 
-class CustomerAdmin(UserAdmin):
+class CustomUserAdmin(UserAdmin):
     add_form = CustomerCreationForm
     form = CustomerChangeForm
     model = Customer
@@ -25,4 +25,5 @@ class CustomerAdmin(UserAdmin):
     )
 
 
-admin.site.register(Customer, CustomerAdmin)
+admin.site.register(Customer, CustomUserAdmin)
+admin.site.register(Patient, CustomUserAdmin)

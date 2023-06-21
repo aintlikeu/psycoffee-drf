@@ -1,9 +1,11 @@
 from django.contrib.auth import login, logout
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics
 from rest_framework import views
 from rest_framework.response import Response
 
-from accounts.serializers import LoginSerializer
+from accounts.models import Patient
+from accounts.serializers import LoginSerializer, SignupSerializer
+from api.views.mixins import CustomSerializerByMethodMixin, CustomCreateMixin
 
 
 class LoginView(views.APIView):
@@ -24,3 +26,17 @@ class LogoutView(views.APIView):
     def get(self, request):
         logout(request)
         return Response({"success": True}, status=status.HTTP_200_OK)
+
+
+class SignupView(CustomSerializerByMethodMixin,
+                 CustomCreateMixin,
+                 generics.GenericAPIView):
+
+    queryset = Patient.objects.all()
+
+    serializer_map = {
+        'POST': SignupSerializer
+    }
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

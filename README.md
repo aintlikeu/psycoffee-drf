@@ -67,7 +67,6 @@ api/login_user
                 "password": <str>
             }
             
-   
 api/logout_user
     GET api/logout_user
 ```

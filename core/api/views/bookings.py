@@ -4,13 +4,13 @@ from api.filters import BookingFilter
 from api.models import Booking
 from api.serializers.bookings import BookingWriteSerializer, BookingReadSerializer
 from api.views.mixins import CustomBookingDestroyMixin, CustomSerializerByMethodMixin, CustomBookingListMixin, \
-    CustomBookingCreateMixin
+    CustomCreateMixin
 
 
 class BookingView(CustomSerializerByMethodMixin,
                   CustomBookingListMixin,
                   CustomBookingDestroyMixin,
-                  CustomBookingCreateMixin,
+                  CustomCreateMixin,
                   generics.GenericAPIView):
     queryset = Booking.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)

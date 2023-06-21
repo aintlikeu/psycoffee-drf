@@ -4,13 +4,13 @@ from api.filters import SpotFilter
 from api.models import Spot
 from api.serializers.spots import SpotWriteSerializer, SpotReadSerializer, FreeSpotReadSerializer
 from api.views.mixins import CustomSerializerByMethodMixin, CustomSpotListMixin, CustomSpotDestroyMixin, \
-    CustomSpotCreateMixin
+    CustomCreateMixin
 
 
 class SimpleSpotView(CustomSerializerByMethodMixin,
                      CustomSpotListMixin,
                      CustomSpotDestroyMixin,
-                     CustomSpotCreateMixin,
+                     CustomCreateMixin,
                      generics.GenericAPIView):
     queryset = Spot.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
