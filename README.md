@@ -11,7 +11,7 @@ api/spots
             "date": <int unixtimestamp>,
             "time": <"HH:MM">,   # (e.g. "11:00")
             "duration": <int>    # (from a list 60, 90, 120)
-        } 
+        }
         
     GET api/spots
     GET api/spots?customer_id={customer_id}&date={unixtimestamp}
@@ -36,7 +36,7 @@ api/bookings
         request format:
         {
             "spot_id": <int>,
-            "duration": <int>,    # (from a list 60, 90, 120),
+            "duration": <int>,    # (from a list 60, 90, 120, must be <= spot duration),
             "phone": <str>,       # "+7xxxxxxxxxx" format
             "name": <str>,
             "comment": <optional str>
@@ -58,7 +58,18 @@ api/free_spots
     GET api/free_spots
     GET api/free_spots?customer_id={customer_id}&date={unixtimestamp}
     GET api/free_spots?customer_id={customer_id}&date={unixtimestamp}&whole_month=true
-    
+
+api/login_user
+    POST api/login_user 
+        request format:
+            {
+                "phone": <str>,       # "+7xxxxxxxxxx" format,
+                "password": <str>
+            }
+            
+   
+api/logout_user
+    GET api/logout_user
 ```
 
 ## Quickstart
