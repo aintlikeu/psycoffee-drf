@@ -40,7 +40,14 @@ class SignupView(CustomSerializerByMethodMixin,
     }
 
     def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        response = self.create(request, *args, **kwargs)
+        # make user log in if account was created
+        if response.status_code == 201:
+            user = self.queryset.get(phone=request.data.get("phone"))
+            login(request, user)
+            return Response({"success": True}, status=status.HTTP_201_CREATED)
+        else:
+            return response
 
 
 class ProfileView(generics.RetrieveAPIView):

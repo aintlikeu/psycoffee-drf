@@ -60,6 +60,7 @@ class SignupSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = Patient.objects.create_user(phone=validated_data['phone'],
                                            password=validated_data['password'])
+
         return user
 
 
