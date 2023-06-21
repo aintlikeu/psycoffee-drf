@@ -59,6 +59,15 @@ api/free_spots
     GET api/free_spots?customer_id={customer_id}&date={unixtimestamp}
     GET api/free_spots?customer_id={customer_id}&date={unixtimestamp}&whole_month=true
 
+api/signup_user
+    POST api/signup_user
+        request format:
+            {
+                "phone": <str>,       # "+7xxxxxxxxxx" format,
+                "password": <str>,
+                "password2": <str>
+            {
+
 api/login_user
     POST api/login_user 
         request format:
@@ -69,6 +78,10 @@ api/login_user
             
 api/logout_user
     GET api/logout_user
+    
+api/profile
+    GET api/profile    
+    
 ```
 
 ## Quickstart
