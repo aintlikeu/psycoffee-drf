@@ -82,7 +82,18 @@ api/logout_user
 api/profile
     GET api/profile    
     
-```
+/auth/
+    ^auth/ ^authorize/?$ [name='authorize']
+    ^auth/ ^token/?$ [name='token']
+    ^auth/ login/<str:backend>/ [name='begin']
+    ^auth/ complete/<str:backend>/ [name='complete']
+    ^auth/ disconnect/<str:backend>/ [name='disconnect']
+    ^auth/ disconnect/<str:backend>/<int:association_id>/ [name='disconnect_individual']
+    ^auth/ ^convert-token/?$ [name='convert_token']
+    ^auth/ ^revoke-token/?$ [name='revoke_token']
+    ^auth/ ^invalidate-sessions/?$ [name='invalidate_sessions']
+    ^auth/ ^invalidate-refresh-tokens/?$ [name='invalidate_refresh_tokens']
+    ^auth/ ^disconnect-backend/?$ [name='disconnect_backend']
 
 ## Quickstart
 To get started with this project, clone the repository:
