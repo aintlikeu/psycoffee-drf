@@ -6,9 +6,13 @@ database:
     name: 'db.sqlite3'
 
 seeding:
-    customer_qty: 5     # Number of customers to seed
+    customer_qty: 1     # Number of customers to seed
     date_qty: 30        # Number of dates to generate dates for
     time_start: 8       # Start time for spots (from 0 to 24)
     time_end: 23        # End time for spots (from 0 to 24)
     time_step: 2        # Interval between times
     booking_share: 0.5  # Share of spots that should be booked (from 0 to 1)
+
+oauth2:
+    google_key: 'YOUR_GOOGLE_KEY_HERE'
+    google_secret: 'YOUR_GOOGLE_SECRET_HERE'
