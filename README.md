@@ -94,6 +94,7 @@ api/profile
     ^auth/ ^invalidate-sessions/?$ [name='invalidate_sessions']
     ^auth/ ^invalidate-refresh-tokens/?$ [name='invalidate_refresh_tokens']
     ^auth/ ^disconnect-backend/?$ [name='disconnect_backend']
+```
 
 ## Quickstart
 To get started with this project, clone the repository:
@@ -125,7 +126,17 @@ Seed data:
 python manage.py seed
 ```
 
-Run the development server:
+## Set up Redis:
+For other operating systems, use the official instructions https://redis.io/docs/getting-started/installation/
+```
+# for MacOS
+brew install redis
+redis-server                # to run in foreground
+brew services start redis   # to run as service
+brew services stop redis    # to stop service
+```
+
+## Run the development server:
 ```
 python manage.py runserver
 ```
