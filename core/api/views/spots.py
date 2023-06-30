@@ -56,4 +56,4 @@ class FreeSpotView(CustomSpotListMixin,
     filterset_class = SpotFilter
 
     def get(self, request, *args, **kwargs):
-        return self.list(self, request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)

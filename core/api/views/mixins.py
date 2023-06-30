@@ -1,9 +1,12 @@
 from collections import defaultdict
 
+import redis
+from django.core.cache import cache
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
+redis_instance = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
 
 class CustomSerializerByMethodMixin:
     """
@@ -47,6 +50,12 @@ class CustomSpotListMixin:
         # if customer_id is None or date is None:
         #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        # Check if the data is already cached
+        cache_key = f'{request.get_full_path()}'
+        cached_data = cache.get(cache_key)
+        if cached_data is not None:
+            return Response(cached_data)
+
         queryset = self.filter_queryset(self.get_queryset())
 
         # group spots by date
@@ -57,4 +66,8 @@ class CustomSpotListMixin:
             spot_info = list(data.values())[0]
             grouped_data[date].append(spot_info)
 
-        return Response({'spots': dict(grouped_data)})
+        # Cache the data
+        response_data = {'spots': dict(grouped_data)}
+        cache.set(cache_key, response_data, timeout=60*60)
+
+        return Response(response_data)
