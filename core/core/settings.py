@@ -1,5 +1,6 @@
 from pathlib import Path
 from yaml import safe_load
+from .secrets import DJANGO_SECRET_KEY, JWT_SECRET_KEY
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -13,7 +14,8 @@ with open(BASE_DIR / 'config.yaml', 'r') as f:
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config['secret_key']
+# SECRET_KEY = config['secret_key']
+SECRET_KEY = DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config['debug']
@@ -35,13 +37,35 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'django_filters',
     'corsheaders',
+
     'oauth2_provider',
     'social_django',
     'drf_social_oauth2',
+
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
     # my apps
     'accounts',
     'api'
 ]
+
+SOCIAL_ACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online'
+        }
+    }
+}
 
 AUTH_USER_MODEL = 'accounts.User'
 
