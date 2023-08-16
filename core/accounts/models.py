@@ -22,7 +22,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    username = None
+    # username = None
+    username = models.TextField(blank=True, default="", max_length=500)
     phone = PhoneNumberField(unique=True, region="RU")
     description = models.TextField(blank=True, default="", max_length=500)
 

@@ -52,7 +52,8 @@ INSTALLED_APPS = [
 
     # my apps
     'accounts',
-    'api'
+    'api',
+    "nextjsauth",
 ]
 
 SOCIAL_ACCOUNT_PROVIDERS = {
