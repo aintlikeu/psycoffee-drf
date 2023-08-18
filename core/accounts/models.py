@@ -24,7 +24,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     # username = None
     username = models.TextField(blank=True, default="", max_length=500)
-    phone = PhoneNumberField(unique=True, region="RU")
+    phone = PhoneNumberField(unique=False, region="RU")
     description = models.TextField(blank=True, default="", max_length=500)
 
     USERNAME_FIELD = 'phone'

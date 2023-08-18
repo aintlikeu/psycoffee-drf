@@ -48,7 +48,7 @@ class SignupView(CustomSerializerByMethodMixin,
         response = self.create(request, *args, **kwargs)
         # make user log in if account was created
         if response.status_code == 201:
-            user = self.queryset.get(phone=request.data.get("phone"))
+            user = self.queryset.filter(phone=request.data.get("phone")).first()
             login(request, user)
             return Response({"success": True}, status=status.HTTP_201_CREATED)
         else:
