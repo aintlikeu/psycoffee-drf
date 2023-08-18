@@ -8,5 +8,5 @@ from django.conf import settings
 class GoogleLoginView(SocialLoginView):
   authentication_classes = [] # disable authentication, make sure to override `allowed origins` in settings.py in production!
   adapter_class = GoogleOAuth2Adapter
-  callback_url = "http://localhost:3000"  # frontend application url
+  callback_url = "http://localhost:3002"  # frontend application url
   client_class = OAuth2Client
