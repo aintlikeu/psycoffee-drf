@@ -29,7 +29,7 @@ class LoginView(views.APIView):
 class LogoutView(views.APIView):
     permission_classes = (permissions.AllowAny,)
 
-    def get(self, request):
+    def post(self, request):
         logout(request)
         return Response({"success": True}, status=status.HTTP_200_OK)
 

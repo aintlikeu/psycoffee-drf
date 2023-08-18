@@ -77,7 +77,7 @@ api/login_user
             }
             
 api/logout_user
-    GET api/logout_user
+    POST api/logout_user
     
 api/profile
     GET api/profile    
