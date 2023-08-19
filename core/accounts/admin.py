@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from accounts.models import Customer, Patient
+from accounts.models import Customer, Patient, User
 from accounts.forms import CustomerChangeForm, CustomerCreationForm
 
 
@@ -27,3 +27,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(Customer, CustomUserAdmin)
 admin.site.register(Patient, CustomUserAdmin)
+admin.site.register(User, CustomUserAdmin)
