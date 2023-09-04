@@ -1,4 +1,5 @@
-The project and README are in progress
+# Overview
+This project is the backend API for a service that facilitates booking appointments with psychologists. It allows users to view and book appointment slots, handle user authentication. The project is designed to provide an easy-to-use interface between the frontend and the database, encapsulating all business logic related to booking and user management.
 
 ## Current endpoints
 
@@ -83,17 +84,7 @@ api/profile
     GET api/profile    
     
 /auth/
-    ^auth/ ^authorize/?$ [name='authorize']
-    ^auth/ ^token/?$ [name='token']
-    ^auth/ login/<str:backend>/ [name='begin']
-    ^auth/ complete/<str:backend>/ [name='complete']
-    ^auth/ disconnect/<str:backend>/ [name='disconnect']
-    ^auth/ disconnect/<str:backend>/<int:association_id>/ [name='disconnect_individual']
-    ^auth/ ^convert-token/?$ [name='convert_token']
-    ^auth/ ^revoke-token/?$ [name='revoke_token']
-    ^auth/ ^invalidate-sessions/?$ [name='invalidate_sessions']
-    ^auth/ ^invalidate-refresh-tokens/?$ [name='invalidate_refresh_tokens']
-    ^auth/ ^disconnect-backend/?$ [name='disconnect_backend']
+    Google Authentication
 ```
 
 ## Quickstart
